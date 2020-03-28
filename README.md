@@ -1,10 +1,12 @@
 ## SpringBoot-aitai
 Meeting management web service
 
-#開発ツール 
-Spring Boot DecTools 
-Lombok 
+#開発ツール
+Spring Boot DecTools
+Lombok
 Spring Configuration Processor
+다음과
+같이
 
 #ウェブ
 Spring Web
