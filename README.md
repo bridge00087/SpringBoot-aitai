@@ -1,24 +1,24 @@
 ## SpringBoot-aitai
 Meeting management web service
 
-・開発ツール
-Spring Boot DecTools
-Lombok
+#開発ツール 
+Spring Boot DecTools 
+Lombok 
 Spring Configuration Processor
 
-・ウェブ
+#ウェブ
 Spring Web
 
-・テンプレートエンジン
+#テンプレートエンジン
 Thymeleaf
 
-・セキュリティー
+#セキュリティー
 Spring Security
 
-・SQL
+#SQL
 Spring Data JPA
 H2 Database
 PostgreSQL Driver
 
-・I/O
+#I/O
 Java Mail Sender
