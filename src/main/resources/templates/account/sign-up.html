@@ -1,10 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Aitai</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        .container {
+            max-width: 100%;
+        }
+    </style>
 </head>
-<body>
-Sign Up Page
+<body class="bg-light">
+     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+         <a class="navbar-brand" href="/" th:href="@{/}">
+             <img src="/images/logo_sm.svg" width="30" height="30">
+         </a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+             <span class="navbar-toggler-icon"></span>
+         </button>
+
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+             <ul class="navbar-nav mr-auto">
+                 <li class="nav-item">
+                     <form th:action="@{/search/meeting}" class="form-inline" method="get">
+                         <input class="form-control mr-sm-2" name="Keyword" type="search" placeholder="ミーティング検索" aria-label="Search">
+                     </form>
+                 </li>
+             </ul>
+
+             <ul class="navbar-nav justify-content-end">
+                 <li class="nav-item">
+                     <a class="nav-link" href="#" th:href="@{/login}">ログイン</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="#" th:href="@{/signup}">登録</a>
+                 </li>
+             </ul>
+         </div>
+     </nav>
+     <div class="container">
+         <div class="py-5 text-center">
+             <h2>会員登録</h2>
+         </div>
+         <div class="row justify-content-center">
+             <form class="needs-validation col-sm-6" action="#"
+                   th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
+                 <div class="form-group">
+                     <label for="nickname">ニックネーム</label>
+                     <input id="nickname" type="text" th:field="*{nickname}" class="form-control"
+                            placeholder="ニックネーム" aria-describedby="nicknameHelp" required minlength="3" maxlength="20">
+                     <small id="nicknameHelp" class="form-text text-muted">
+                         空白無しで文字と数字のみ、３桁以上、２０桁以内で入力してください。会員登録後、変更できます。
+                     </small>
+                     <small class="invalid-feedback">ニックネームを入力してくださ。</small>
+                     <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Nickname Error</small>
+                 </div>
+
+                 <div class="form-group">
+                     <label for="email">Eメール</label>
+                     <input id="email" type="email" th:field="*{email}" class="form-control"
+                            placeholder="your@email.com" aria-describedby="emailHelp" required>
+                     <small id="emailHelp" class="form-text text-muted">
+                         アイタイは利用者のEメールを公開しません。
+                     </small>
+                     <small class="invalid-feedback">Eメールを入力してくださ。</small>
+                     <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</small>
+                 </div>
+
+                 <div class="form-group">
+                     <label for="password">パスワード</label>
+                     <input id="password" type="password" th:field="*{password}" class="form-control"
+                            aria-describedby="passwordHelp" required minlength="8" maxlength="50">
+                     <small id="passwordHelp" class="form-text text-muted">
+                         ８桁以上、５０桁未満で入力してください。 英字、数字、特殊記号は使用できますが空白は使用できません。
+                     </small>
+                     <small class="invalid-feedback">パスワードを入力してくださ。</small>
+                     <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</small>
+                 </div>
+
+                 <div class="form-group">
+                     <button class="btn btn-primary btn-block" type="submit"
+                             aria-describedby="submitHelp">登録</button>
+                     <small id="submitHelp" class="form-text text-muted">
+                         <a href="#">約款</a>に同意すると登録ボタンをクリックしてください。
+                     </small>
+                 </div>
+             </form>
+         </div>
+
+         <footer th:fragment="footer">
+             <div class="row justify-content-center">
+                 <small class="d-block mb-3 text-muted">アイタイ&copy; 2020</small>
+             </div>
+         </footer>
+     </div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="application/javascript">
+        (function () {
+            'use strict';
+
+            windows.addEventListener('load', function () {
+
+                var forms = document.getElementsByClassName('needs-validation');
+
+                // submitイベントが発生した時、フォームの検証を行う。
+                Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() == false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+            }, false)
+        }())
+    </script>
 </body>
 </html>
