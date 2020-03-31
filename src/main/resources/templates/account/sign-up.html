@@ -30,10 +30,10 @@
 
              <ul class="navbar-nav justify-content-end">
                  <li class="nav-item">
-                     <a class="nav-link" href="#" th:href="@{/login}">ログイン</a>
+                     <a class="nav-link" th:href="@{/login}">ログイン</a>
                  </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="#" th:href="@{/signup}">登録</a>
+                     <a class="nav-link" th:href="@{/signup}">登録</a>
                  </li>
              </ul>
          </div>
@@ -43,12 +43,10 @@
              <h2>会員登録</h2>
          </div>
          <div class="row justify-content-center">
-             <form class="needs-validation col-sm-6" action="#"
-                   th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
+             <form class="needs-validation col-sm-6" th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
                  <div class="form-group">
                      <label for="nickname">ニックネーム</label>
-                     <input id="nickname" type="text" th:field="*{nickname}" class="form-control"
-                            placeholder="ニックネーム" aria-describedby="nicknameHelp" required minlength="3" maxlength="20">
+                     <input id="nickname" type="text" th:field="*{nickname}" class="form-control" placeholder="ニックネーム" aria-describedby="nicknameHelp" required minlength="3" maxlength="20">
                      <small id="nicknameHelp" class="form-text text-muted">
                          空白無しで文字と数字のみ、３桁以上、２０桁以内で入力してください。会員登録後、変更できます。
                      </small>
@@ -58,8 +56,7 @@
 
                  <div class="form-group">
                      <label for="email">Eメール</label>
-                     <input id="email" type="email" th:field="*{email}" class="form-control"
-                            placeholder="your@email.com" aria-describedby="emailHelp" required>
+                     <input id="email" type="email" th:field="*{email}" class="form-control" placeholder="your@email.com" aria-describedby="emailHelp" required>
                      <small id="emailHelp" class="form-text text-muted">
                          アイタイは利用者のEメールを公開しません。
                      </small>
@@ -79,8 +76,7 @@
                  </div>
 
                  <div class="form-group">
-                     <button class="btn btn-primary btn-block" type="submit"
-                             aria-describedby="submitHelp">登録</button>
+                     <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">登録</button>
                      <small id="submitHelp" class="form-text text-muted">
                          <a href="#">約款</a>に同意すると登録ボタンをクリックしてください。
                      </small>
