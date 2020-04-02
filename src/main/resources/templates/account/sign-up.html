@@ -45,32 +45,26 @@
          <div class="row justify-content-center">
              <form class="needs-validation col-sm-6" th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
                  <div class="form-group">
-                     <label for="nickname">ニックネーム</label>
-                     <input id="nickname" type="text" th:field="*{nickname}" class="form-control" placeholder="ニックネーム" aria-describedby="nicknameHelp" required minlength="3" maxlength="20">
-                     <small id="nicknameHelp" class="form-text text-muted">
-                         空白無しで文字と数字のみ、３桁以上、２０桁以内で入力してください。会員登録後、変更できます。
+                     <label for="email">Eメール</label>
+                     <input id="email" type="email" th:field="*{email}" class="form-control" aria-describedby="emailHelp" required>
+                     <small id="emailHelp" class="form-text text-muted">
+                         入力例）-----@-----.---
                      </small>
-                     <small class="invalid-feedback">ニックネームを入力してくださ。</small>
-                     <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Nickname Error</small>
+                     <small class="invalid-feedback">Eメールを入力してください。</small>
+                     <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</small>
                  </div>
 
                  <div class="form-group">
-                     <label for="email">Eメール</label>
-                     <input id="email" type="email" th:field="*{email}" class="form-control" placeholder="your@email.com" aria-describedby="emailHelp" required>
-                     <small id="emailHelp" class="form-text text-muted">
-                         アイタイは利用者のEメールを公開しません。
-                     </small>
-                     <small class="invalid-feedback">Eメールを入力してくださ。</small>
-                     <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</small>
+                     <label for="nickname">ニックネーム</label>
+                     <input id="nickname" type="text" th:field="*{nickname}" class="form-control" aria-describedby="nicknameHelp" required minlength="3" maxlength="20">
+                     <small class="invalid-feedback">ニックネームを入力してくださ。</small>
+                     <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Nickname Error</small>
                  </div>
 
                  <div class="form-group">
                      <label for="password">パスワード</label>
                      <input id="password" type="password" th:field="*{password}" class="form-control"
                             aria-describedby="passwordHelp" required minlength="8" maxlength="50">
-                     <small id="passwordHelp" class="form-text text-muted">
-                         ８桁以上、５０桁未満で入力してください。 英字、数字、特殊記号は使用できますが空白は使用できません。
-                     </small>
                      <small class="invalid-feedback">パスワードを入力してくださ。</small>
                      <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</small>
                  </div>
@@ -78,7 +72,7 @@
                  <div class="form-group">
                      <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">登録</button>
                      <small id="submitHelp" class="form-text text-muted">
-                         <a href="#">約款</a>に同意すると登録ボタンをクリックしてください。
+                         <a href="#">利用約款</a>
                      </small>
                  </div>
              </form>
