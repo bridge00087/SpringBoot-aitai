@@ -22,10 +22,12 @@ public class Account {
 
     private String password;
 
+    /* Eメール確認済みフラグ */
     private boolean emailVerified;
 
     private String emailCheckToken;
 
+    /* 会員登録日時 */
     private LocalDateTime joinedAt;
 
     private String bio;

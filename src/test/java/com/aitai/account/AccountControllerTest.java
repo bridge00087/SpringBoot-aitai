@@ -68,6 +68,8 @@ public class AccountControllerTest {
         assertNotNull(account);
         // パスワード暗号化確認
         assertNotEquals(account.getPassword(), "12345678");
+        // EメールTokenが存在するか確認
+        assertNotNull(account.getEmailCheckToken());
         // メール送信確認
         then(javaMailSender).should().send(any(SimpleMailMessage.class));
     }
