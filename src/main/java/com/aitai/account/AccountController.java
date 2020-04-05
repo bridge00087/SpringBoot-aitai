@@ -41,7 +41,8 @@ public class AccountController {
         }
 
         // サービスの呼び出し
-        accountService.processNewAccount(signUpForm);
+        Account account = accountService.processNewAccount(signUpForm);
+        accountService.login(account);
         // 会員登録処理
         return "redirect:/";
     }
@@ -58,14 +59,15 @@ public class AccountController {
             return view;
         }
 
-        // Token一致しない
-        if (!account.getEmailCheckToken().equals(token)) {
+        // Tokenが一致するかチェック
+        if (!account.isValidToken(token)) {
             model.addAttribute("error", "wrong.token");
 
             return view;
         }
 
         account.completeSignUp();
+        accountService.login(account);
         model.addAttribute("numberOfUser", accountRepository.count());
         model.addAttribute("nickname", account.getNickname());
 
