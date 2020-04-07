@@ -24,6 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         // staticリソースはフィルターを適用しない。
         web.ignoring()
+                .mvcMatchers("/node?modules/**")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 }
