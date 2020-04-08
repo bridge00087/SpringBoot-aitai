@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head th:fragment="head">
+        <meta charset="UTF-8">
+        <title>Aitai</title>
+        <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+        <style>
+            .container {
+                max-width: 100%;
+            }
+        </style>
+    </head>
+
+    <nav th:fragment="main-nav" class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <a class="navbar-brand" href="/" th:href="@{/}">
+            アイタイ
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <form th:action="@{/search/meeting}" class="form-inline" method="get">
+                        <input class="form-control mr-sm-2" name="Keyword" type="search" placeholder="ミーティング検索" aria-label="Search">
+                    </form>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav justify-content-end">
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" th:href="@{/login}">ログイン</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" th:href="@{/sign-up}">登録</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/notifications}">お知らせ</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link btn btn-outline-primary" th:href="@{/notifications}">ミーティング開設</a>
+                </li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        プロフィール
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
+                        <h6 class="dropdown-header">
+                            <span sec:authentication="name">Username</span>
+                        </h6>
+                        <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">プロフィール</a>
+                        <a class="dropdown-item">ミーティング</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" th:href="@{'/settings/profile'}">設定</a>
+                        <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
+                            <button class="dropdown-item" type="submit">ログアウト</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <footer th:fragment="footer">
+        <div class="row justify-content-center">
+            <small class="d-block mb-3 text-muted">アイタイ&copy; 2020</small>
+        </div>
+    </footer>
+
+</html>

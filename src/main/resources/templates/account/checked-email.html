@@ -1,51 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Aitai</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <style>
-        .container {
-            max-width: 100%;
-        }
-    </style>
-</head>
+<head th:replace="fragments.html :: head"></head>
 <body class="bg-light">
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <a class="navbar-brand" href="/" th:href="@{/}">
-            アイタイ
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <form th:action="@{/search/meeting}" class="form-inline" method="get">
-                        <input class="form-control mr-sm-2" name="Keyword" type="search" placeholder="ミーティング検索" aria-label="Search">
-                    </form>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/login}">ログイン</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/signup}">登録</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
+    <div th:replace="fragments.html :: main-nav"></div>
     <div class="py-5 text-center" th:if="${error}">
         <p class="lead">アイタイEメール確認</p>
         <div class="alert alert-danger" role="alert">
             Eメールのリンクが正しくではありません。
         </div>
     </div>
-
     <div class="py-5 text-center" th:if="${error == null}">
         <p class="lead">アイタイEメール確認</p>
         <h2>
@@ -54,5 +17,6 @@
         </h2>
         <small class="text-info">これから会員登録の時、使用したEメールまたはニックネームとパスワードでログインできます。</small>
     </div>
+    <div th:replace="fragments.html :: footer"></div>
 </body>
 </html>
