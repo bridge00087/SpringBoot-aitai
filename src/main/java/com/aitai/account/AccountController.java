@@ -2,7 +2,6 @@ package com.aitai.account;
 
 import com.aitai.domain.Account;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor
@@ -72,6 +70,29 @@ public class AccountController {
         model.addAttribute("nickname", account.getNickname());
 
         return view;
+    }
+
+    @GetMapping("/check-email")
+    public String checkEmail(@CurrentUser Account account, Model model) {
+        model.addAttribute("email", account.getEmail());
+
+        return "account/check-email";
+    }
+
+    @GetMapping("/resend-confirm-email")
+    public String resendConfirmEmail(@CurrentUser Account account, Model model) {
+        if (!account.canSendConfirmEmail()) {
+            // 認証Eメール送信時間チェック
+            model.addAttribute("error", "認証Eメールは1時間ごとに1回のみ転送できます。");
+            model.addAttribute("email", account.getEmail());
+
+            return "account/check-email";
+        }
+
+        // 認証Eメール再送信
+        accountService.sendSignUpConfirmEmail(account);
+
+        return "redirect:/";
     }
 
 }
