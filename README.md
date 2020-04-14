@@ -2,7 +2,7 @@
 Meeting management web service
 
 #開発ツール  
-Spring Boot DecTools  
+Spring Boot DevTools  
 Lombok  
 Spring Configuration Processor
 
