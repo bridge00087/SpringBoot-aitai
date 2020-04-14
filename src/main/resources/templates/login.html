@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-light">
+    <div th:replace="fragments.html :: main-nav"></div>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>ログイン</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                <p>Eメール(又はニックネーム)とパスワードが正しくではありません。</p>
+                <p>又は確認されてないEメールを使用しました。Eメールを確認してください。</p>
+                <p>
+                    確認後、改めて入力もしくは、<a th:href="@{/findpassword}">パスワード検索</a>を利用してください。
+                </p>
+            </div>
+
+            <form class="needs-validation col-sm-6" th:action="@{/login}" method="post" novalidate>
+                <div class="form-group">
+                    <label for="username">Eメール又はニックネーム</label>
+                    <input id="username" type="text" name="username" class="form-control"
+                           placeholder="your@email.com" aria-describedby="emailHelp" required>
+                    <small id="emailHelp" class="form-text text-muted">
+                        登録時に使用したEメール又はニックネームを入力してください。
+                    </small>
+                    <small class="invalid-feedback">Eメールを入力してください。</small>
+                </div>
+                <div class="form-group">
+                    <label for="password">パスワード</label>
+                    <input id="password" type="password" name="password" class="form-control"
+                           aria-describedby="passwordHelp" required>
+                    <small id="passwordHelp" class="form-text text-muted">
+                        パスワードを忘れた場合、<a th:href="@{/emaillogin}">パスワード無してログイン</a>する。
+                    </small>
+                    <small class="invalid-feedback">パスワードを入力してください。</small>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-success btn-block" type="submit"
+                            aria-describedby="submitHelp">ログイン</button>
+                    <small id="submitHelp" class="form-text text-muted">
+                        アイタイが初めての方は<a th:href="@{/sign-up}">登録</a>してください。
+                    </small>
+                </div>
+            </form>
+        </div>
+
+        <div th:replace="fragments.html :: footer"></div>
+    </div>
+    <script th:replace="fragments.html :: form-validation"></script>
+</body>
+</html>

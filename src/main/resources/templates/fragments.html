@@ -81,4 +81,26 @@
         </div>
     </footer>
 
+    <script type="application/javascript" th:fragment="form-validation">
+        (function () {
+            'use strict';
+
+            windows.addEventListener('load', function () {
+
+                var forms = document.getElementsByClassName('needs-validation');
+
+                // submitイベントが発生した時、フォームの検証を行う。
+                Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() == false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+            }, false)
+        }())
+    </script>
+
 </html>

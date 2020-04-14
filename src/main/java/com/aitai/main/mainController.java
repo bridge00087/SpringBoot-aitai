@@ -18,4 +18,10 @@ public class mainController {
 
         return "index";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        // ログイン画面
+        return "login";
+    }
 }
