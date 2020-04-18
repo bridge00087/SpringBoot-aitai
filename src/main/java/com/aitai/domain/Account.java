@@ -12,35 +12,46 @@ import java.util.UUID;
 @Builder @AllArgsConstructor @NoArgsConstructor
 public class Account {
 
+    /* ID */
     @Id @GeneratedValue
     private Long id;
 
+    /* Eメール */
     @Column(unique = true)
     private String email;
 
+    /* ニックネーム */
     @Column(unique = true)
     private String nickname;
 
+    /* パスワード */
     private String password;
 
     /* Eメール確認済みフラグ */
     private boolean emailVerified;
 
+    /* EメールチェックToken */
     private String emailCheckToken;
 
+    /* EメールチェックToken生成時間 */
     private LocalDateTime emailCheckTokenGeneratedAt;
 
     /* 会員登録日時 */
     private LocalDateTime joinedAt;
 
+    /* 紹介文 */
     private String bio;
 
+    /* 自分のウェブサイトURL */
     private String url;
 
+    /* 職業 */
     private String occupation;
 
+    /* 活動場所 */
     private String location;
 
+    /* プロフィールイメージ */
     @Lob @Basic(fetch = FetchType.EAGER)
     private String profileImage;
 

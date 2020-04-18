@@ -8,6 +8,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -95,4 +96,17 @@ public class AccountController {
         return "redirect:/";
     }
 
+    @GetMapping("/profile/{nickname}")
+    public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account) {
+        Account byNickName = accountRepository.findByNickname(nickname);
+        if (nickname == null) {
+            // ニックネームで検索する。
+            throw new IllegalArgumentException(nickname + "に該当する利用者が存在しません。");
+        }
+
+        model.addAttribute(byNickName);
+        model.addAttribute("isOwner", byNickName.equals(account));
+
+        return "account/profile";
+    }
 }
