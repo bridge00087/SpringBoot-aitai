@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
 
@@ -26,7 +27,6 @@ public class AccountService implements UserDetailsService {
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
     public Account processNewAccount(SignUpForm signUpForm) {
         // 入力フォームの定義
         Account newAccount = saveNewAccount(signUpForm);
@@ -69,6 +69,7 @@ public class AccountService implements UserDetailsService {
         context.setAuthentication(token);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(emailOrNickname);
@@ -83,5 +84,11 @@ public class AccountService implements UserDetailsService {
         }
 
         return new UserAccount(account);
+    }
+
+    public void completeSignUp(Account account) {
+        // Eメール認証処理
+        account.completeSignUp();
+        login(account);
     }
 }
