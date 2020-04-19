@@ -1,6 +1,7 @@
 package com.aitai.account;
 
 import com.aitai.domain.Account;
+import com.aitai.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -90,5 +91,18 @@ public class AccountService implements UserDetailsService {
         // Eメール認証処理
         account.completeSignUp();
         login(account);
+    }
+
+    public void updateProfile(Account account, Profile profile) {
+        // プロフィール更新処理
+        account.setUrl(profile.getUrl());
+        account.setOccupation(profile.getOccupation());
+        account.setLocation(profile.getLocation());
+        account.setBio(profile.getBio());
+        // TODO プロフィールイメージ修正
+
+        accountRepository.save(account);
+
+        // TODO 問題２
     }
 }

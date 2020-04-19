@@ -2,8 +2,10 @@ package com.aitai.settings;
 
 import com.aitai.domain.Account;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class Profile {
 
     /* 自己紹介 */

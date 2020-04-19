@@ -17,7 +17,7 @@
                 <!-- Nickname -->
                 <h1 class="display-4" th:text="${account.nickname}">ニックネーム</h1>
                 <!-- Bio -->
-                <p class="lead" th:if="${!#strings.isEmpty(account.bio)}" th:text="account.bio">自己紹介</p>
+                <p class="lead" th:if="${!#strings.isEmpty(account.bio)}" th:text="${account.bio}">自己紹介</p>
                 <p class="lead" th:if="${#strings.isEmpty(account.bio) && isOwner}">
                     紹介文を追加してください。
                 </p>
