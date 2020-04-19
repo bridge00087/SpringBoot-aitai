@@ -17,7 +17,7 @@
                 <!-- Nickname -->
                 <h1 class="display-4" th:text="${account.nickname}">ニックネーム</h1>
                 <!-- Bio -->
-                <p class="lead" th:if="${!#strings.isEmpty(account.bio)}" th:text="account.bio">紹介文</p>
+                <p class="lead" th:if="${!#strings.isEmpty(account.bio)}" th:text="account.bio">自己紹介</p>
                 <p class="lead" th:if="${#strings.isEmpty(account.bio) && isOwner}">
                     紹介文を追加してください。
                 </p>
@@ -28,7 +28,7 @@
             <div class="col-2">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <a class="nav-link active" id="v-pills-intro-tab" data-toggle="pill" href="#v-pills-profile"
-                       role="tab" aria-controls="v-pills-profile" aria-selected="true">紹介</a>
+                       role="tab" aria-controls="v-pills-profile" aria-selected="true">自己紹介</a>
                     <a class="nav-link" id="v-pills-study-tab" data-toggle="pill" href="#v-pills-study"
                        role="tab" aria-controls="v-pills-study" aria-selected="false">ミーティング</a>
                 </div>

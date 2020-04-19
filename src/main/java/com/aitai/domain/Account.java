@@ -39,7 +39,7 @@ public class Account {
     /* 会員登録日時 */
     private LocalDateTime joinedAt;
 
-    /* 紹介文 */
+    /* 自己紹介 */
     private String bio;
 
     /* 自分のウェブサイトURL */

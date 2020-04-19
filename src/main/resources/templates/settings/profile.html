@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-light">
+    <div th:replace="fragments.html :: main-nav"></div>
+    <div class="container">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-2">
+                <div th:replace="fragments.html :: settings-menu(currentMenu='profile')"></div>
+            </div>
+            <div class="col-8">
+                <div class="row">
+                    <h2 class="col-sm-12" th:text="${account.nickname}">ニックネーム</h2>
+                </div>
+                <div class="row mt-3">
+                    <form class="col-sm-6" th:action="@{/settings/profile}" th:object="${profile}" method="post" novalidate>
+                        <div class="form-group">
+                            <label for="bio">自己紹介</label>
+                            <input id="bio" type="text" th:field="*{bio}" class="form-control"
+                                   placeholder="簡単な自己紹介をお願いします。" aria-describedby="bioHelp" required>
+                            <small id="bioHelp" class="form-text text-muted">
+                                35桁以内で入力してください。
+                            </small>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}">
+                                少し長いです。
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="url">リンク</label>
+                            <input id="url" type="url" th:field="*{url}" class="form-control"
+                                   placeholder="http://アイタイ（仮）.com" aria-describedby="urlHelp" required>
+                            <small id="urlHelp" class="form-text text-muted">
+                                ブログ, ユーチューブ又は好きなウェブサイトなど、自分を表現できるリンクを追加してください。
+                            </small>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('url')}" th:errors="*{url}">
+                                正しいURLではありません。例のように入力してください。
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="company">職業</label>
+                            <input id="company" type="text" th:field="*{occupation}" class="form-control"
+                                   placeholder="どんなお仕事をされていますか。" aria-describedby="occupationHelp" required>
+                            <small id="occupationHelp" class="form-text text-muted">
+                                エンジニア?マネジャー?就活?社長さま?
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="location">活動地域</label>
+                            <input id="location" type="text" th:field="*{location}" class="form-control"
+                                   placeholder="東京、大阪、北海道"
+                                   aria-describedby="locationdHelp" required>
+                            <small id="locationdHelp" class="form-text text-muted">
+                                主に活動（お住まい、職場又は遊び場）地域の名前を教えてください。
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" type="submit"
+                                    aria-describedby="submitHelp">修正</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
