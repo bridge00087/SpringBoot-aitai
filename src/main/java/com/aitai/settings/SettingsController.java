@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.management.Notification;
 import javax.validation.Valid;
 
 @Controller
@@ -28,6 +29,9 @@ public class SettingsController {
 
     static final String SETTINGS_PASSWORD_VIEW_NAME = "settings/password";
     static final String SETTINGS_PASSWORD_URL = "/settings/password";
+
+    static final String SETTINGS_NOTIFICATIONS_VIEW_NAME = "settings/notifications";
+    static final String SETTINGS_NOTIFICATIONS_URL = "/settings/notifications";
 
     private final AccountService accountService;
 
@@ -77,5 +81,30 @@ public class SettingsController {
         attributes.addFlashAttribute("message","パスワードを変更しました。");
         // 更新後、自画面へリダイレクト
         return "redirect:" + SETTINGS_PASSWORD_URL;
+    }
+
+    @GetMapping(SETTINGS_NOTIFICATIONS_URL)
+    public String updateNotificationsForm(@CurrentUser Account account, Model model) {
+        model.addAttribute(account);
+        model.addAttribute(new Notifications(account));
+
+        // お知らせ変更画面表示
+        return SETTINGS_NOTIFICATIONS_VIEW_NAME;
+    }
+
+    @PostMapping(SETTINGS_NOTIFICATIONS_URL)
+    public String updateNotifications(@CurrentUser Account account, @Valid Notifications notifications, Errors errors,
+                                      Model model, RedirectAttributes attributes) {
+        if (errors.hasErrors()) {
+            model.addAttribute(account);
+            // エラーの場合、自画面を再表示する。
+            return SETTINGS_NOTIFICATIONS_VIEW_NAME;
+        }
+        // パスワード更新処理
+        accountService.updateNotifications(account, notifications);
+        // リダイレクトメッセージを搭載
+        attributes.addFlashAttribute("message","お知らせ設定を変更しました。");
+        // 更新後、自画面へリダイレクト
+        return "redirect:" + SETTINGS_NOTIFICATIONS_URL;
     }
 }

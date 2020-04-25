@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-light">
+<nav th:replace="fragments.html :: main-nav"></nav>
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-2">
+            <div th:replace="fragments.html :: settings-menu(currentMenu='notifications')"></div>
+        </div>
+        <div class="col-8">
+            <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+                <span th:text="${message}">完了</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="row">
+                <h2 class="col-12">お知らせ設定</h2>
+            </div>
+            <div class="row mt-3" th:fragment="profile-form">
+                <form class="col-12" th:action="@{/settings/notifications}" th:object="${notifications}" method="post" novalidate>
+                    <div class="alert alert-light" role="alert">
+                        <strong><a th:href="@{/settings/locations}">主な活動地域</a>に
+                            <a th:href="@{/settings/keywords}">気になる話題</a>のミーティングが開催された時に</strong> お知らせを受信する方法を設定してください。
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-switch custom-control-inline">
+                            <input type="checkbox" th:field="*{meetingCreatedByEmail}" class="custom-control-input" id="meetingCreatedByEmail">
+                            <label class="custom-control-label" for="meetingCreatedByEmail">Eメールで受信する</label>
+                        </div>
+                        <div class="custom-control custom-switch custom-control-inline">
+                            <input type="checkbox" th:field="*{meetingCreatedByWeb}" class="custom-control-input" id="meetingCreatedByWeb">
+                            <label class="custom-control-label" for="meetingCreatedByWeb">ウェbで受信する</label>
+                        </div>
+                    </div>
+                    <div class="alert alert-light" role="alert">
+                        <strong>ミーティング参加申込</strong> 結果のお知らせを受信する方法を設定してください。
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-switch custom-control-inline">
+                            <input type="checkbox" th:field="*{meetingEnrollmentResultByEmail}" class="custom-control-input" id="meetingEnrollmentResultByEmail">
+                            <label class="custom-control-label" for="meetingEnrollmentResultByEmail">Eメールで受信する</label>
+                        </div>
+                        <div class="custom-control custom-switch custom-control-inline">
+                            <input type="checkbox" th:field="*{meetingEnrollmentResultByWeb}" class="custom-control-input" id="meetingEnrollmentResultByWeb">
+                            <label class="custom-control-label" for="meetingEnrollmentResultByWeb">ウェbで受信する</label>
+                        </div>
+                    </div>
+                    <div class="alert alert-light" role="alert">
+                        <strong>参加中のミーティング</strong>に対するお知らせを受信する方法を設定してください。
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-switch custom-control-inline">
+                            <input type="checkbox" th:field="*{meetingUpdatedByEmail}" class="custom-control-input" id="meetingWatchByEmail">
+                            <label class="custom-control-label" for="meetingWatchByEmail">Eメールで受信する</label>
+                        </div>
+                        <div class="custom-control custom-switch custom-control-inline">
+                            <input type="checkbox" th:field="*{meetingUpdatedByWeb}" class="custom-control-input" id="meetingWatchByWeb">
+                            <label class="custom-control-label" for="meetingWatchByWeb">ウェbで受信する</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-primary" type="submit" aria-describedby="submitHelp">変更</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments.html :: footer"></div>
+</div>
+</body>
+</html>

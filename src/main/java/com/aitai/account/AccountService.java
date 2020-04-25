@@ -1,6 +1,7 @@
 package com.aitai.account;
 
 import com.aitai.domain.Account;
+import com.aitai.settings.Notifications;
 import com.aitai.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -106,6 +107,17 @@ public class AccountService implements UserDetailsService {
     public void updatePassword(Account account, String newPassword) {
         // パスワード変更処理
         account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account);
+    }
+
+    public void updateNotifications(Account account, Notifications notifications) {
+        // お知らせ設定変更処理
+        account.setMeetingCreatedByEmail(notifications.isMeetingCreatedByEmail());
+        account.setMeetingCreatedByWeb(notifications.isMeetingCreatedByWeb());
+        account.setMeetingEnrollmentResultByEmail(notifications.isMeetingEnrollmentResultByEmail());
+        account.setMeetingEnrollmentResultByWeb(notifications.isMeetingEnrollmentResultByWeb());
+        account.setMeetingUpdatedByEmail(notifications.isMeetingUpdatedByEmail());
+        account.setMeetingUpdatedByWeb(notifications.isMeetingUpdatedByWeb());
         accountRepository.save(account);
     }
 }
