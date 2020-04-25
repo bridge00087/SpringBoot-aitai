@@ -1,12 +1,9 @@
 package com.aitai.settings;
 
-import com.aitai.domain.Account;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 @Data
-@NoArgsConstructor
 public class Profile {
 
     /* 自己紹介 */
@@ -27,13 +24,5 @@ public class Profile {
 
     /* プロフィールイメージ */
     private String profileImage;
-
-    public Profile(Account account) {
-        this.bio = account.getBio();
-        this.url = account.getUrl();
-        this.occupation = account.getOccupation();
-        this.location = account.getLocation();
-        this.profileImage = account.getProfileImage();
-    }
 
 }

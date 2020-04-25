@@ -4,6 +4,7 @@ import com.aitai.domain.Account;
 import com.aitai.settings.Notifications;
 import com.aitai.settings.Profile;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +29,7 @@ public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     public Account processNewAccount(SignUpForm signUpForm) {
         // 入力フォームの定義
@@ -96,11 +98,7 @@ public class AccountService implements UserDetailsService {
 
     public void updateProfile(Account account, Profile profile) {
         // プロフィール更新処理
-        account.setUrl(profile.getUrl());
-        account.setOccupation(profile.getOccupation());
-        account.setLocation(profile.getLocation());
-        account.setBio(profile.getBio());
-        account.setProfileImage(profile.getProfileImage());
+        modelMapper.map(profile, account);
         accountRepository.save(account);
     }
 
@@ -112,12 +110,7 @@ public class AccountService implements UserDetailsService {
 
     public void updateNotifications(Account account, Notifications notifications) {
         // お知らせ設定変更処理
-        account.setMeetingCreatedByEmail(notifications.isMeetingCreatedByEmail());
-        account.setMeetingCreatedByWeb(notifications.isMeetingCreatedByWeb());
-        account.setMeetingEnrollmentResultByEmail(notifications.isMeetingEnrollmentResultByEmail());
-        account.setMeetingEnrollmentResultByWeb(notifications.isMeetingEnrollmentResultByWeb());
-        account.setMeetingUpdatedByEmail(notifications.isMeetingUpdatedByEmail());
-        account.setMeetingUpdatedByWeb(notifications.isMeetingUpdatedByWeb());
+        modelMapper.map(notifications, account);
         accountRepository.save(account);
     }
 }
