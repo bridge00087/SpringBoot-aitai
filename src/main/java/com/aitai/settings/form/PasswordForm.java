@@ -1,4 +1,4 @@
-package com.aitai.settings;
+package com.aitai.settings.form;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

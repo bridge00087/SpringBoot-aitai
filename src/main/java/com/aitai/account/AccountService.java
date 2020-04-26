@@ -1,8 +1,9 @@
 package com.aitai.account;
 
 import com.aitai.domain.Account;
-import com.aitai.settings.Notifications;
-import com.aitai.settings.Profile;
+import com.aitai.settings.form.NicknameForm;
+import com.aitai.settings.form.Notifications;
+import com.aitai.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -112,5 +113,12 @@ public class AccountService implements UserDetailsService {
         // お知らせ設定変更処理
         modelMapper.map(notifications, account);
         accountRepository.save(account);
+    }
+
+    public void updateNickname(Account account, NicknameForm nicknameForm) {
+        // ニックネーム変更処理
+        modelMapper.map(nicknameForm, account);
+        accountRepository.save(account);
+        login(account);
     }
 }
