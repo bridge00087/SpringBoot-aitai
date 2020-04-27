@@ -121,4 +121,16 @@ public class AccountService implements UserDetailsService {
         accountRepository.save(account);
         login(account);
     }
+
+    public void sendLoginLink(Account account) {
+        // Eメール認証メールを発送処理
+        account.generateEmailCheckToken();
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+
+        mailMessage.setTo(account.getEmail());
+        mailMessage.setSubject("アイタイ、ログインリンク");
+        mailMessage.setText("/login-by-email?token=" + account.getEmailCheckToken() +
+                "&email=" + account.getEmail());
+        javaMailSender.send(mailMessage);
+    }
 }

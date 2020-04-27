@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -107,5 +108,43 @@ public class AccountController {
         model.addAttribute("isOwner", byNickName.equals(account));
 
         return "account/profile";
+    }
+
+    @GetMapping("/email-login")
+    public String emailLoginForm() {
+        return "account/email-login";
+    }
+
+    @PostMapping("/email-login")
+    public String sendEmailLoginLink(String email, Model model, RedirectAttributes attributes) {
+        Account account = accountRepository.findByEmail(email);
+        if (account == null) {
+            model.addAttribute("error", "有効なEメールでは有りません。");
+            // エラーの場合、自画面を再表示
+            return "account/email-login";
+        }
+
+        if (!account.canSendConfirmEmail()) {
+            model.addAttribute("error", "Eメールログインは１時間後に利用できます。");
+            // エラーの場合、自画面を再表示
+            // return "account/email-login";
+        }
+
+        accountService.sendLoginLink(account);
+        attributes.addFlashAttribute("message", "Eメール認証メールを発送しました。");
+        return "redirect:/email-login";
+    }
+
+    @GetMapping("/login-by-email")
+    public String loginByEmail(String token, String email, Model model) {
+        Account account = accountRepository.findByEmail(email);
+        String view = "account/logged-in-by-email";
+        if (account == null || !account.isValidToken(token)) {
+            model.addAttribute("error", "ログインできません。");
+            return view;
+        }
+
+        accountService.login(account);
+        return view;
     }
 }
