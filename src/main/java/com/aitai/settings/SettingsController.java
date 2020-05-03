@@ -39,6 +39,9 @@ public class SettingsController {
     static final String SETTINGS_ACCOUNT_VIEW_NAME = "settings/account";
     static final String SETTINGS_ACCOUNT_URL = "/" + SETTINGS_ACCOUNT_VIEW_NAME;
 
+    static final String SETTINGS_TAGS_VIEW_NAME = "settings/tags";
+    static final String SETTINGS_TAGS_URL = "/" + SETTINGS_TAGS_VIEW_NAME;
+
     private final AccountService accountService;
     private final ModelMapper modelMapper;
     private final NicknameValidator nicknameValidator;
@@ -120,6 +123,14 @@ public class SettingsController {
         attributes.addFlashAttribute("message","お知らせ設定を変更しました。");
         // 更新後、自画面へリダイレクト
         return "redirect:" + SETTINGS_NOTIFICATIONS_URL;
+    }
+
+    @GetMapping(SETTINGS_TAGS_URL)
+    public String updateTags(@CurrentUser Account account, Model model) {
+        model.addAttribute(account);
+
+        // 関心テーマ画面表示
+        return SETTINGS_TAGS_VIEW_NAME;
     }
 
     @GetMapping(SETTINGS_ACCOUNT_URL)
