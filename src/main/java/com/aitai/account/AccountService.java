@@ -1,6 +1,7 @@
 package com.aitai.account;
 
 import com.aitai.domain.Account;
+import com.aitai.domain.Tag;
 import com.aitai.settings.form.NicknameForm;
 import com.aitai.settings.form.Notifications;
 import com.aitai.settings.form.Profile;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -132,5 +134,11 @@ public class AccountService implements UserDetailsService {
         mailMessage.setText("/login-by-email?token=" + account.getEmailCheckToken() +
                 "&email=" + account.getEmail());
         javaMailSender.send(mailMessage);
+    }
+
+    public void addTag(Account account, Tag tag) {
+        // 関心テーマ追加処理
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getTags().add(tag));
     }
 }

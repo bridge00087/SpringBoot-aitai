@@ -3,25 +3,23 @@ package com.aitai.settings;
 import com.aitai.account.AccountService;
 import com.aitai.account.CurrentUser;
 import com.aitai.domain.Account;
-import com.aitai.settings.form.NicknameForm;
-import com.aitai.settings.form.Notifications;
-import com.aitai.settings.form.PasswordForm;
-import com.aitai.settings.form.Profile;
+import com.aitai.domain.Tag;
+import com.aitai.settings.form.*;
 import com.aitai.settings.validator.NicknameValidator;
 import com.aitai.settings.validator.PasswordFormValidator;
+import com.aitai.tag.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -45,6 +43,7 @@ public class SettingsController {
     private final AccountService accountService;
     private final ModelMapper modelMapper;
     private final NicknameValidator nicknameValidator;
+    private final TagRepository tagRepository;
 
     @InitBinder("passwordForm")
     public void passwordFormInitBinder(WebDataBinder webDataBinder) { webDataBinder.addValidators(new PasswordFormValidator()); }
@@ -131,6 +130,22 @@ public class SettingsController {
 
         // 関心テーマ画面表示
         return SETTINGS_TAGS_VIEW_NAME;
+    }
+
+    @PostMapping("settings/tags/add")
+    @ResponseBody
+    public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
+        String title = tagForm.getTagTitle();
+
+        Tag tag = tagRepository.findByTitle(title);
+        if (tag == null) {
+            tag = tagRepository.save(Tag.builder().title(tagForm.getTagTitle()).build());
+        }
+
+        // 関心テーマ追加処理
+        accountService.addTag(account, tag);
+        // 関心テーマ追加後、関心テーマ画面表示
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(SETTINGS_ACCOUNT_URL)
