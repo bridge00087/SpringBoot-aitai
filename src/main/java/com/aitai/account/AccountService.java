@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -140,5 +141,13 @@ public class AccountService implements UserDetailsService {
         // 関心テーマ追加処理
         Optional<Account> byId = accountRepository.findById(account.getId());
         byId.ifPresent(a -> a.getTags().add(tag));
+    }
+
+    public Set<Tag> getTags(Account account) {
+        // 登録した関心テーマ取得
+        Optional<Account> byId = accountRepository.findById(account.getId());
+
+        // 情報が存在する場合、タグ情報をリターン（ない場合はエラー）
+        return byId.orElseThrow().getTags();
     }
 }

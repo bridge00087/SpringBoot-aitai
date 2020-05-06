@@ -19,7 +19,8 @@
                         参加したいミーティングのテーマを入力してください。該当するテーマのミーティングが開催されるとお知らせします。<br/>
                         タグを入力し、コンマ（,）又ENTERを入力してください。
                     </div>
-                    <input id="tags" type="text" name="tags" class="tagify-outside" aria-describedby="tagHelp"/>
+                    <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
+                           class="tagify-outside" aria-describedby="tagHelp"/>
                 </div>
             </div>
         </div>
