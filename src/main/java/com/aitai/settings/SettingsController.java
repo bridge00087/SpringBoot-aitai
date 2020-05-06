@@ -137,19 +137,31 @@ public class SettingsController {
         return SETTINGS_TAGS_VIEW_NAME;
     }
 
-    @PostMapping("settings/tags/add")
+    @PostMapping(SETTINGS_TAGS_URL + "/add")
     @ResponseBody
     public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
         String title = tagForm.getTagTitle();
-
         Tag tag = tagRepository.findByTitle(title);
         if (tag == null) {
-            tag = tagRepository.save(Tag.builder().title(tagForm.getTagTitle()).build());
+            tag = tagRepository.save(Tag.builder().title(title).build());
         }
-
         // 関心テーマ追加処理
         accountService.addTag(account, tag);
         // 関心テーマ追加後、関心テーマ画面表示
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(SETTINGS_TAGS_URL + "/remove")
+    @ResponseBody
+    public ResponseEntity removeTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
+        String title = tagForm.getTagTitle();
+        Tag tag = tagRepository.findByTitle(title);
+        if (tag == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        // 関心テーマ削除処理
+        accountService.removeTag(account, tag);
+        // 関心テーマ削除後、関心テーマ画面表示
         return ResponseEntity.ok().build();
     }
 
@@ -157,7 +169,6 @@ public class SettingsController {
     public String updateAccountForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(modelMapper.map(account, NicknameForm.class));
-
         // お知らせ変更画面表示
         return SETTINGS_ACCOUNT_VIEW_NAME;
     }
