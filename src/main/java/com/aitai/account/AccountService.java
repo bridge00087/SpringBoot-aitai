@@ -36,10 +36,8 @@ public class AccountService implements UserDetailsService {
     private final ModelMapper modelMapper;
 
     public Account processNewAccount(SignUpForm signUpForm) {
-        // 入力フォームの定義
+        // アカウントの登録
         Account newAccount = saveNewAccount(signUpForm);
-        // EメールToken生成
-        newAccount.generateEmailCheckToken();
         // 確認Eメール送信
         sendSignUpConfirmEmail(newAccount);
 
@@ -47,14 +45,11 @@ public class AccountService implements UserDetailsService {
     }
 
     private Account saveNewAccount(@Valid SignUpForm signUpForm) {
-        Account account = Account.builder()
-                .email(signUpForm.getEmail())
-                .nickname(signUpForm.getNickname())
-                .password(passwordEncoder.encode(signUpForm.getPassword()))
-                .meetingCreatedByWeb(true)
-                .meetingEnrollmentResultByWeb(true)
-                .meetingUpdatedByWeb(true)
-                .build();
+        signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+        Account account = modelMapper.map(signUpForm, Account.class);
+        // EメールToken生成
+        account.generateEmailCheckToken();
+
         return accountRepository.save(account);
     }
 
