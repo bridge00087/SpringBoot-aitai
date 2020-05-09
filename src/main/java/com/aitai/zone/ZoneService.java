@@ -24,7 +24,7 @@ public class ZoneService {
     @PostConstruct
     public void initZoneData() throws IOException {
         if (zoneRepository.count() == 0) {
-            Resource resource = new ClassPathResource("zones_jp");
+            Resource resource = new ClassPathResource("zones_jp.csv");
             List<Zone> zoneList = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8).stream()
                     .map(line -> {
                         String[] split = line.split(",");
@@ -33,5 +33,6 @@ public class ZoneService {
             zoneRepository.saveAll(zoneList);
         }
     }
+
 
 }

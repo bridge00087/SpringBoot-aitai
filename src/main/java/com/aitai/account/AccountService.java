@@ -2,6 +2,7 @@ package com.aitai.account;
 
 import com.aitai.domain.Account;
 import com.aitai.domain.Tag;
+import com.aitai.domain.Zone;
 import com.aitai.settings.form.NicknameForm;
 import com.aitai.settings.form.Notifications;
 import com.aitai.settings.form.Profile;
@@ -141,7 +142,6 @@ public class AccountService implements UserDetailsService {
     public Set<Tag> getTags(Account account) {
         // 登録した関心テーマ取得
         Optional<Account> byId = accountRepository.findById(account.getId());
-
         // 情報が存在する場合、タグ情報をリターン（ない場合はエラー）
         return byId.orElseThrow().getTags();
     }
@@ -150,5 +150,26 @@ public class AccountService implements UserDetailsService {
         // 登録した関心テーマ削除
         Optional<Account> byId = accountRepository.findById(account.getId());
         byId.ifPresent(a -> a.getTags().remove(tag));
+    }
+
+    public Set<Zone> getZones(Account account) {
+        // 登録した活動地域の取得
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        // 情報が存在する場合、地域情報をリターン（ない場合はエラー）
+        return byId.orElseThrow().getZones();
+    }
+
+    public void addZone(Account account, Zone zone) {
+        // 登録した活動地域の取得
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        // 地域追加
+        byId.ifPresent(a -> a.getZones().add(zone));
+    }
+
+    public void removeZone(Account account, Zone zone) {
+        // 登録した活動地域の取得
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        // 地域削除
+        byId.ifPresent(a -> a.getZones().remove(zone));
     }
 }

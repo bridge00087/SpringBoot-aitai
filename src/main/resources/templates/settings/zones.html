@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments.html :: head"></head>
@@ -7,31 +6,31 @@
 <div class="container">
     <div class="row mt-5 justify-content-center">
         <div class="col-2">
-            <div th:replace="fragments.html :: settings-menu(currentMenu='tags')"></div>
+            <div th:replace="fragments.html :: settings-menu(currentMenu='zones')"></div>
         </div>
         <div class="col-8">
             <div class="row">
-                <h2 class="col-12">関心テーマ</h2>
+                <h2 class="col-12">主な活動地域</h2>
             </div>
             <div class="row">
                 <div class="col-12">
                     <div class="alert alert-info" role="alert">
-                        参加したいミーティングのテーマを入力してください。該当するテーマのミーティングが開催されるとお知らせします。<br/>
-                        タグを入力し、コンマ（,）又ENTERを入力してください。
+                        活動地域を登録してください。該当する地域にミーティングが開催されるとアラームの受信ができます。<br/>
+                        システムに登録された地域のみ選択できます。
                     </div>
                     <div id="whitelist" th:text="${whitelist}" hidden></div>
-                    <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
+                    <input id="zones" type="text" name="zones" th:value="${#strings.listJoin(zones, ',')}"
                            class="tagify-outside" aria-describedby="tagHelp"/>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
 <script th:replace="fragments.html :: ajax-csrf-header"></script>
+<script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
 <script type="application/javascript">
-    $(function() {
-        function tagRequest(url, tagTitle) {
+    $(function () {
+        function tagRequest(url, zoneName) {
             $.ajax({
                 dataType: "json",
                 autocomplete: {
@@ -40,8 +39,8 @@
                 },
                 contentType: "application/json; charset=utf-8",
                 method: "POST",
-                url: "/settings/tags" + url,
-                data: JSON.stringify({'tagTitle': tagTitle})
+                url: "/settings/zones" + url,
+                data: JSON.stringify({'zoneName': zoneName})
             }).done(function (data, status) {
                 console.log("${data} and status is ${status}");
             });
@@ -55,9 +54,10 @@
             tagRequest("/remove", e.detail.data.value);
         }
 
-        var tagInput = document.querySelector("#tags");
+        var tagInput = document.querySelector("#zones");
+
         var tagify = new Tagify(tagInput, {
-            pattern: /^.{0,20}$/,
+            enforceWhitelist: true,
             whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
             dropdown : {
                 enabled: 1, // suggest tags after a single character input
@@ -66,6 +66,7 @@
 
         tagify.on("add", onAdd);
         tagify.on("remove", onRemove);
+
         // add a class to Tagify's input element
         tagify.DOM.input.classList.add('form-control');
         // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
