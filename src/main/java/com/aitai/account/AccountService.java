@@ -3,13 +3,17 @@ package com.aitai.account;
 import com.aitai.domain.Account;
 import com.aitai.domain.Tag;
 import com.aitai.domain.Zone;
+import com.aitai.mail.EmailMessage;
+import com.aitai.mail.EmailService;
 import com.aitai.settings.form.NicknameForm;
 import com.aitai.settings.form.Notifications;
 import com.aitai.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -21,18 +25,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
-    private final JavaMailSender javaMailSender;
+    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
@@ -55,13 +63,14 @@ public class AccountService implements UserDetailsService {
     }
 
     public void sendSignUpConfirmEmail(Account newAccount) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(newAccount.getEmail());
-        mailMessage.setSubject("アイタイ, 会員登録認証");
-        mailMessage.setText("/check-email-token?token=" + newAccount.getEmailCheckToken() +
-                "&email=" + newAccount.getEmail());
+        EmailMessage emailMessage = EmailMessage.builder()
+                .to(newAccount.getEmail())
+                .subject("アイタイ, 会員登録認証")
+                .message("/check-email-token?token=" + newAccount.getEmailCheckToken() +
+                        "&email=" + newAccount.getEmail())
+                .build();
 
-        javaMailSender.send(mailMessage);
+        emailService.sendEmail(emailMessage);
     }
 
     public void login(Account account) {
@@ -123,14 +132,14 @@ public class AccountService implements UserDetailsService {
 
     public void sendLoginLink(Account account) {
         // Eメール認証メールを発送処理
-        account.generateEmailCheckToken();
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        EmailMessage emailMessage = EmailMessage.builder()
+                .to(account.getEmail())
+                .subject("アイタイ、ログインリンク")
+                .message("/login-by-email?token=" + account.getEmailCheckToken() +
+                        "&email=" + account.getEmail())
+                .build();
 
-        mailMessage.setTo(account.getEmail());
-        mailMessage.setSubject("アイタイ、ログインリンク");
-        mailMessage.setText("/login-by-email?token=" + account.getEmailCheckToken() +
-                "&email=" + account.getEmail());
-        javaMailSender.send(mailMessage);
+        emailService.sendEmail(emailMessage);
     }
 
     public void addTag(Account account, Tag tag) {

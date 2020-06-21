@@ -1,6 +1,8 @@
 package com.aitai.account;
 
 import com.aitai.domain.Account;
+import com.aitai.mail.EmailMessage;
+import com.aitai.mail.EmailService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,7 @@ public class AccountControllerTest {
     AccountRepository accountRepository;
 
     @MockBean
-    JavaMailSender javaMailSender;
+    EmailService emailService;
 
     @DisplayName("会員登録画面の表示確認テスト")
     @Test
@@ -78,7 +80,7 @@ public class AccountControllerTest {
         // EメールTokenが存在するか確認
         assertNotNull(account.getEmailCheckToken());
         // メール送信確認
-        then(javaMailSender).should().send(any(SimpleMailMessage.class));
+        then(emailService).should().sendEmail(any(EmailMessage.class));
     }
 
     @DisplayName("認証Eメール確認：入力値エラー")
