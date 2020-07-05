@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>アイタイ</title>
+</head>
+<body>
+    <div>
+        <p>こんにちは、<span th:text="${nickname}"></span>さま。</p>
+
+        <h2 th:text="${message}">メッセージ</h2>
+
+        <div>
+            <a th:href="${host + link}" th:text="linkname">Link</a>
+            <p>リンクが押せない場合は下記のURLを利用してください。</p>
+            <small th:text="${host + link}"></small>
+        </div>
+    </div>
+    <footer>
+        <small>アイタイ&copy; 2020</small>
+    </footer>
+</body>
+</html>
